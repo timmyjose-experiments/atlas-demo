@@ -1,4 +1,4 @@
-import { ScrollView, useWindowDimensions, View } from 'react-native'
+import { SafeAreaView, ScrollView, useWindowDimensions, View } from 'react-native'
 import { createAtlasSupportSDK } from '@atlasinc/react-native-sdk'
 import { styles } from './styles'
 
@@ -17,13 +17,13 @@ const Demo = () => {
   console.log(`window height = ${windowHeight}`)
 
   return (
-    <View>
+    <SafeAreaView style={{ flex: 1 }}>
         <atlasSDK.AtlasSupportWidget
           style={{ 
-            height: windowHeight - 150
+            flex: 1
           }}
         />
-    </View>
+    </SafeAreaView>
   )
 }
 
