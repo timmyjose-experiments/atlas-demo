@@ -1,21 +1,29 @@
-import { useNavigation } from '@react-navigation/native'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { RootStackParamList } from './App'
+import { ScrollView, useWindowDimensions, View } from 'react-native'
+import { createAtlasSupportSDK } from '@atlasinc/react-native-sdk'
 import { styles } from './styles'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { Pressable, Text } from 'react-native'
+
+const atlasSDK = createAtlasSupportSDK({
+  appId: '2hxlstzbd5',
+  onError: (err) => console.error(err)
+})
+
+const unsubscribe = atlasSDK.watchAtlasSupportStats(( { conversations } ) => {
+  const unreadTotal = conversations.reduce((total, c) => total + c.unread, 0)
+  console.warn(`Total unread conversations = ${unreadTotal}`)
+})
 
 const Demo = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
+  const { height: windowHeight } = useWindowDimensions()
+  console.log(`window height = ${windowHeight}`)
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Pressable
-        style={styles.button}
-        onPress={() => navigation.navigate('Home')}>
-        <Text>Home</Text>
-      </Pressable>
-    </SafeAreaView>
+    <View>
+        <atlasSDK.AtlasSupportWidget
+          style={{ 
+            height: windowHeight - 150
+          }}
+        />
+    </View>
   )
 }
 
